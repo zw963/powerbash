@@ -1,5 +1,7 @@
 # A Powerline like PS1, working with bash.
 
+![2021-06-20_01-10.png](http://zw963.github.io/images/11278115292820.png)
+
 Have a opportunity you need settings a supported fonts for this.
 
 e.g i use `Konsole + Inconsolata`.
