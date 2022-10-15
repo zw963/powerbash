@@ -267,7 +267,7 @@ __powerbash() {
         if [ $pwd == $HOME ]; then
             dir_array=('~')
         else
-            IFS='/' read -a dir_array <<< "$pwd"
+            readarray -d'/' -t dir_array <<< "$pwd"
         fi
 
         if [ ${#dir_array[@]} -gt $dir_split_count ]; then
@@ -300,9 +300,7 @@ __powerbash() {
     __powerbash_path_mini() {
         local current_path="${PWD/$HOME/\~}"
 
-        OLDIFS=$IFS
-        IFS='/' read -a dir_array <<< "$current_path"
-        IFS=$OLDIFS
+        readarray -d'/' -t dir_array <<< "$current_path"
 
         local path=""
         local dir_len=$((${#dir_array[@]}-1))
