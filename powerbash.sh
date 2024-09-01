@@ -107,10 +107,15 @@ BG_BLUE="\[$(tput setab 4)\]"
 BG_MAGENTA="\[$(tput setab 5)\]"
 BG_CYAN="\[$(tput setab 6)\]"
 BG_WHITE="\[$(tput setab 7)\]"
-BG_ARRAY="\[$(tput setab ⮀)\]"
 
 CURRENT_BG='NONE'
 SEGMENT_SEPARATOR='⮀'
+
+function __asdf () {
+    local pattern="^$1"
+
+    asdf current |awk "/$pattern/ {printf \$1\" \"\$2}"
+}
 
 __powerbash() {
     # define variables
@@ -183,6 +188,7 @@ __powerbash() {
             COLOR_DIR=$WHITE$BG_BLUE
             COLOR_GIT=$WHITE$BG_CYAN
             COLOR_RVM=$BOLD$GREEN
+            COLOR_ASDF=$BOLD$GREEN
             COLOR_RC=$WHITE$BG_RED
             COLOR_JOBS=$WHITE$BG_MAGENTA
             COLOR_SYMBOL_USER=$WHITE$BG_GREEN
@@ -235,6 +241,14 @@ __powerbash() {
         [[ -n "$rvm_version" ]] || return # rvm not loaded.
 
         [ "$POWERBASH_RVM" == "on" ] && printf " $COLOR_RVM➦ $(rvm-prompt) $RESET"
+    }
+
+    __powerbash_asdf_display() {
+        which asdf &>/dev/null || return # asdf not installed
+        [ -z "$POWERBASH_ASDF" ] && POWERBASH_ASDF="on" # sane default
+        [ "$POWERBASH_ASDF" == "off" ] && return # disable display
+
+        [ "$POWERBASH_ASDF" == "on" ] && printf " $COLOR_ASDF➦ $(__asdf crystal) $RESET"
     }
 
     __powerbash_date_display() {
@@ -372,7 +386,8 @@ __powerbash() {
                 PS1+="$(__powerbash_host_display)"
                 PS1+="$(__powerbash_path_display)"
                 PS1+="$(__powerbash_git_display)"
-                PS1+="$(__powerbash_rvm_display)"
+                # PS1+="$(__powerbash_rvm_display)"
+                PS1+="$(__powerbash_asdf_display)"
                 PS1+="$(__powerbash_jobs_display)"
                 PS1+="$(__powerbash_symbol_display)"
                 PS1+="$(__powerbash_rc_display ${RETURN_CODE})"
