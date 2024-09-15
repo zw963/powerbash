@@ -386,7 +386,7 @@ __powerbash() {
                 PS1+="$(__powerbash_host_display)"
                 PS1+="$(__powerbash_path_display)"
                 PS1+="$(__powerbash_git_display)"
-                # PS1+="$(__powerbash_rvm_display)"
+                PS1+="$(__powerbash_rvm_display)"
                 PS1+="$(__powerbash_asdf_display)"
                 PS1+="$(__powerbash_jobs_display)"
                 PS1+="$(__powerbash_symbol_display)"
