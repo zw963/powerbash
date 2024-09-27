@@ -249,7 +249,9 @@ __powerbash() {
         [ -z "$POWERBASH_ASDF" ] && POWERBASH_ASDF="on" # sane default
         [ "$POWERBASH_ASDF" == "off" ] && return # disable display
 
-        [ "$POWERBASH_ASDF" == "on" ] && printf " $COLOR_ASDF➦ $(__asdf crystal) $RESET"
+        if [ "$POWERBASH_ASDF" == "on" ]; then
+            asdf current |awk "{printf \"$COLOR_ASDF➦ \" \$1\" \"\$2\" \"}"
+        fi
     }
 
     __powerbash_date_display() {
