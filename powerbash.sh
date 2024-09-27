@@ -249,8 +249,13 @@ __powerbash() {
         [ -z "$POWERBASH_ASDF" ] && POWERBASH_ASDF="on" # sane default
         [ "$POWERBASH_ASDF" == "off" ] && return # disable display
 
+        asdf_output=$(asdf current)
+        [ "$POWERBASH_ASDF_CRYSTAL" == off ] && asdf_output=$(echo "$asdf_output" |grep -v '^crystal')
+        [ "$POWERBASH_ASDF_ELIXIR" == off ] && asdf_output=$(echo "$asdf_output" |grep -v '^elixir')
+
+
         if [ "$POWERBASH_ASDF" == "on" ]; then
-            asdf current |awk "{printf \"$COLOR_ASDF➦ \" \$1\" \"\$2\" \"}"
+            echo $asdf_output |awk "{printf \"$COLOR_ASDF➦ \" \$1\" \"\$2\" \"}"
         fi
     }
 
