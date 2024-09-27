@@ -58,28 +58,28 @@
 # if [ "$rvm_version" ]; then
 #     PS1='
 # \[$(tput setab 7)$(tput setaf 0)\]  ⚡  \[$(tput sgr0)\]\
-# \[$(tput setab ⮀)$(tput bold)$(tput setaf 4)\] \w\[$(tput sgr0)\]\
-# \[$(tput setaf 2)\]$(__git_ps1 " ➜ (%s)")\[$(tput sgr0)\]\
-# \[$(tput setaf 1)\]$(git rev-parse --is-inside-work-tree &>/dev/null && git log -1 --pretty="<%h>")\[$(tput sgr0)\] \
-# \[$(tput setaf 3)\][gemset:($(rvm-prompt))]\[$(tput sgr0)\]\
-# \[$(tput setaf 7)\][\[$(tput sgr0)\]\
-# \[$(tput setaf 7)\]\u@\h\[$(tput sgr0)\]\
-# \[$(tput setaf 6)\] $(date +"%m/%d %a %H:%M")\[$(tput sgr0)\]\
-# \[$(tput setaf 7)\]]\[$(tput sgr0)\]
+    # \[$(tput setab ⮀)$(tput bold)$(tput setaf 4)\] \w\[$(tput sgr0)\]\
+    # \[$(tput setaf 2)\]$(__git_ps1 " ➜ (%s)")\[$(tput sgr0)\]\
+    # \[$(tput setaf 1)\]$(git rev-parse --is-inside-work-tree &>/dev/null && git log -1 --pretty="<%h>")\[$(tput sgr0)\] \
+    # \[$(tput setaf 3)\][gemset:($(rvm-prompt))]\[$(tput sgr0)\]\
+    # \[$(tput setaf 7)\][\[$(tput sgr0)\]\
+    # \[$(tput setaf 7)\]\u@\h\[$(tput sgr0)\]\
+    # \[$(tput setaf 6)\] $(date +"%m/%d %a %H:%M")\[$(tput sgr0)\]\
+    # \[$(tput setaf 7)\]]\[$(tput sgr0)\]
 # \[$(tput bold)$(tput setaf 7)\] ☠ \[$(tput sgr0)\]\
-# \$ '
+    # \$ '
 # else
 #     PS1='
 # \[$(tput setab 7)$(tput setaf 0)\]  ⚡  \[$(tput sgr0)\]\
-# \[$(tput bold)$(tput setaf 4)\] \w\[$(tput sgr0)\]\
-# \[$(tput setaf 2)\]$(__git_ps1 " ➜ (%s)")\[$(tput sgr0)\] \
-# \[$(tput setaf 2)\]$(git rev-parse --is-inside-work-tree &>/dev/null && git log -1 --pretty="<%h>")\[$(tput sgr0)\] \
-# \[$(tput setaf 7)\][\[$(tput sgr0)\]\
-# \[$(tput setaf 7)\]\u@\h\[$(tput sgr0)\]\
-# \[$(tput setaf 6)\] $(date +"%m/%d %a %H:%M")\[$(tput sgr0)\]\
-# \[$(tput setaf 7)\]]\[$(tput sgr0)\]
+    # \[$(tput bold)$(tput setaf 4)\] \w\[$(tput sgr0)\]\
+    # \[$(tput setaf 2)\]$(__git_ps1 " ➜ (%s)")\[$(tput sgr0)\] \
+    # \[$(tput setaf 2)\]$(git rev-parse --is-inside-work-tree &>/dev/null && git log -1 --pretty="<%h>")\[$(tput sgr0)\] \
+    # \[$(tput setaf 7)\][\[$(tput sgr0)\]\
+    # \[$(tput setaf 7)\]\u@\h\[$(tput sgr0)\]\
+    # \[$(tput setaf 6)\] $(date +"%m/%d %a %H:%M")\[$(tput sgr0)\]\
+    # \[$(tput setaf 7)\]]\[$(tput sgr0)\]
 # \[$(tput bold)$(tput setaf 7)\] ☠ \[$(tput sgr0)\]\
-# \$ '
+    # \$ '
 # fi
 
 # exit for non-interactive
@@ -236,6 +236,7 @@ __powerbash() {
 
     __powerbash_rvm_display() {
         which rvm-prompt &>/dev/null || return # rvm not installed
+        [ -n "$(rvm-prompt)" ] || return # current no rvm gemset
         [ -z "$POWERBASH_RVM" ] && POWERBASH_RVM="on" # sane default
         [ "$POWERBASH_RVM" == "off" ] && return # disable display
         [[ -n "$rvm_version" ]] || return # rvm not loaded.
