@@ -252,10 +252,11 @@ __powerbash() {
         asdf_output=$(asdf current)
         [ "$POWERBASH_ASDF_CRYSTAL" == off ] && asdf_output=$(echo "$asdf_output" |grep -v '^crystal')
         [ "$POWERBASH_ASDF_ELIXIR" == off ] && asdf_output=$(echo "$asdf_output" |grep -v '^elixir')
+        [ "$POWERBASH_ASDF_ELIXIR_LS" == off ] && asdf_output=$(echo "$asdf_output" |grep -v '^elixir-ls')
 
 
         if [ "$POWERBASH_ASDF" == "on" ]; then
-            echo $asdf_output |awk "{printf \"$COLOR_ASDF➦ \" \$1\" \"\$2\" \"}"
+            echo "$asdf_output" |awk "{printf \"$COLOR_ASDF➦ \" \$1\" \"\$2\" \"}"
         fi
     }
 
