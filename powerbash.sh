@@ -109,7 +109,7 @@ BG_CYAN="\[$(tput setab 6)\]"
 BG_WHITE="\[$(tput setab 7)\]"
 
 CURRENT_BG='NONE'
-SEGMENT_SEPARATOR='⮀'
+SEGMENT_SEPARATOR=''
 
 function __asdf () {
     local pattern="^$1"
@@ -348,7 +348,7 @@ __powerbash() {
         esac
 
         prompt_segment white black ""
-        prompt_segment blue white "$dir_display"
+        prompt_segment black white "$dir_display"
         prompt_end
     }
 
