@@ -20,15 +20,3 @@ source the/path/of/powerbash.sh
 ```
 
 ![1.jpg](https://zw963.github.io/images/158452164014558.jpg)
-
-If you found your's powerline not show correct like above, please consider if you install inappropriate fonts, 
-linux X system may select different fonts as falback font depend on what you installed.
-
-e.g. for arch linux, if you install the package named `noto-fonts`,  will result this.
-
-For this case, you need set a font which PUA builtin. e.g.  [Inconsolata-dz-Powerline.otf](https://github.com/powerline/fonts/blob/master/InconsolataDz/Inconsolata-dz%20for%20Powerline.otf) or [Sarasa-Mono-SC-Nerd](https://github.com/laishulu/Sarasa-Mono-SC-Nerd).
-
-
-
-
-
