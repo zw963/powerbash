@@ -366,7 +366,7 @@ __powerbash() {
         local symbol_bg=$COLOR_SYMBOL_USER
         [ $EUID -eq 0 ] && symbol_bg=$COLOR_SYMBOL_ROOT
 
-        printf "\n ╰─ \\$""$RESET"
+        printf "\n ╰──➤ \\$""$RESET"
     }
 
     __powerbash_rc_display() {
