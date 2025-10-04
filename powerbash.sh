@@ -85,28 +85,31 @@
 # exit for non-interactive
 [[ -z $PS1 ]] && return
 
-DIM="\[$(tput dim)\]"
-REVERSE="\[$(tput rev)\]"
-RESET="\[$(tput sgr0)\]"
-BOLD="\[$(tput bold)\]"
+BASH_START=$(echo -e '\001')
+BASH_END=$(echo -e '\002')
 
-BLACK="\[$(tput setaf 0)\]"
-RED="\[$(tput setaf 1)\]"
-GREEN="\[$(tput setaf 2)\]"
-BROWN="\[$(tput setaf 3)\]"
-BLUE="\[$(tput setaf 4)\]"
-MAGENTA="\[$(tput setaf 5)\]"
-CYAN="\[$(tput setaf 6)\]"
-WHITE="\[$(tput setaf 7)\]"
+DIM="${BASH_START}$(tput dim)${BASH_END}"
+REVERSE="${BASH_START}$(tput rev)${BASH_END}"
+RESET="${BASH_START}$(tput sgr0)${BASH_END}"
+BOLD="${BASH_START}$(tput bold)${BASH_END}"
 
-BG_BLACK="\[$(tput setab 0)\]"
-BG_RED="\[$(tput setab 1)\]"
-BG_GREEN="\[$(tput setab 2)\]"
-BG_BROWN="\[$(tput setab 3)\]"
-BG_BLUE="\[$(tput setab 4)\]"
-BG_MAGENTA="\[$(tput setab 5)\]"
-BG_CYAN="\[$(tput setab 6)\]"
-BG_WHITE="\[$(tput setab 7)\]"
+BLACK="${BASH_START}$(tput setaf 0)${BASH_END}"
+RED="${BASH_START}$(tput setaf 1)${BASH_END}"
+GREEN="${BASH_START}$(tput setaf 2)${BASH_END}"
+BROWN="${BASH_START}$(tput setaf 3)${BASH_END}"
+BLUE="${BASH_START}$(tput setaf 4)${BASH_END}"
+MAGENTA="${BASH_START}$(tput setaf 5)${BASH_END}"
+CYAN="${BASH_START}$(tput setaf 6)${BASH_END}"
+WHITE="${BASH_START}$(tput setaf 7)${BASH_END}"
+
+BG_BLACK="${BASH_START}$(tput setab 0)${BASH_END}"
+BG_RED="${BASH_START}$(tput setab 1)${BASH_END}"
+BG_GREEN="${BASH_START}$(tput setab 2)${BASH_END}"
+BG_BROWN="${BASH_START}$(tput setab 3)${BASH_END}"
+BG_BLUE="${BASH_START}$(tput setab 4)${BASH_END}"
+BG_MAGENTA="${BASH_START}$(tput setab 5)${BASH_END}"
+BG_CYAN="${BASH_START}$(tput setab 6)${BASH_END}"
+BG_WHITE="${BASH_START}$(tput setab 7)${BASH_END}"
 
 CURRENT_BG='NONE'
 SEGMENT_SEPARATOR=''
@@ -195,16 +198,16 @@ __powerbash() {
             COLOR_SYMBOL_ROOT=$WHITE$BG_RED
         else
             # 256 color support
-            COLOR_USER="\[$(tput setaf 15)\]\[$(tput setab 8)\]"
-            COLOR_SUDO="$BROWN\[$(tput setab 8)\]"
-            COLOR_SSH="$BROWN\[$(tput setab 8)\]"
-            COLOR_DIR="$WHITE\[$(tput setab 8)\]"
-            COLOR_GIT="\[$(tput setaf 15)\]$BG_BLUE"
-            COLOR_RC="\[$(tput setaf 15)\]\[$(tput setab 9)\]"
-            COLOR_JOBS="\[$(tput setaf 15)\]$BG_MAGENTA"
-            COLOR_PY_VIRTUALENV="\[$(tput setaf 15)\]$BG_MAGENTA"
-            COLOR_SYMBOL_USER="\[$(tput setaf 15)\]$BG_GREEN"
-            COLOR_SYMBOL_ROOT="\[$(tput setaf 15)\]$BG_RED"
+            COLOR_USER="${BASH_START}$(tput setaf 15)${BASH_END}${BASH_START}$(tput setab 8)${BASH_END}"
+            COLOR_SUDO="$BROWN${BASH_START}$(tput setab 8)${BASH_END}"
+            COLOR_SSH="$BROWN${BASH_START}$(tput setab 8)${BASH_END}"
+            COLOR_DIR="$WHITE${BASH_START}$(tput setab 8)${BASH_END}"
+            COLOR_GIT="${BASH_START}$(tput setaf 15)${BASH_END}$BG_BLUE"
+            COLOR_RC="${BASH_START}$(tput setaf 15)${BASH_END}${BASH_START}$(tput setab 9)${BASH_END}"
+            COLOR_JOBS="${BASH_START}$(tput setaf 15)${BASH_END}$BG_MAGENTA"
+            COLOR_PY_VIRTUALENV="${BASH_START}$(tput setaf 15)${BASH_END}$BG_MAGENTA"
+            COLOR_SYMBOL_USER="${BASH_START}$(tput setaf 15)${BASH_END}$BG_GREEN"
+            COLOR_SYMBOL_ROOT="${BASH_START}$(tput setaf 15)${BASH_END}$BG_RED"
         fi
     }
 
