@@ -378,6 +378,46 @@ __powerbash() {
         [ $1 -ne 0 ] && printf "$COLOR_RC $1 $RESET"
     }
 
+    # True when running inside emacs-libvterm
+    __powerbash_is_vterm() {
+        [[ ${INSIDE_EMACS-} == vterm ]]
+    }
+
+    __powerbash_vterm_printf() {
+        if [ -n "$TMUX" ] \
+               && { [ "${TERM%%-*}" = "tmux" ] \
+                        || [ "${TERM%%-*}" = "screen" ]; }; then
+            # Tell tmux to pass the escape sequences through
+            printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+        elif [ "${TERM%%-*}" = "screen" ]; then
+            # GNU screen (screen, screen-256color, screen-256color-bce)
+            printf "\eP\e]%s\007\e\\" "$1"
+        else
+            printf "\e]%s\e\\" "$1"
+        fi
+    }
+
+    __powerbash_vterm_prompt_end(){
+        local user="${USER-$(whoami)}"
+        local host="${HOSTNAME-$(hostname)}"
+        local pwd="${PWD-$(pwd)}"
+        __powerbash_vterm_printf "51;A${user}@${host}:${pwd}"
+    }
+
+    # Optional: export compatibility names ONLY if user hasn't defined them.
+    __powerbash_vterm_install_compat() {
+        __powerbash_is_vterm || return 0
+
+        declare -F vterm_printf >/dev/null 2>&1 || vterm_printf() {
+                __powerbash_vterm_printf "$1"
+            }
+
+        declare -F vterm_prompt_end >/dev/null 2>&1 || vterm_prompt_end() {
+                __powerbash_vterm_prompt_end
+            }
+    }
+    __powerbash_vterm_install_compat
+
     __powerbash_ps1() {
         # keep this at top!!!
         # capture latest return code
@@ -406,6 +446,13 @@ __powerbash() {
                 PS1+=" "
                 ;;
         esac
+
+        # Emacs libvterm bash integration for support directory-tracking and
+        # prompt-tracking or message passing.
+        # Check https://github.com/akermu/emacs-libvterm?tab=readme-ov-file#shell-side-configuration
+        if __powerbash_is_vterm; then
+            PS1+='\[$(vterm_prompt_end)\]'
+        fi
     }
 
     PROMPT_COMMAND="__powerbash_ps1 on"
