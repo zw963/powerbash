@@ -404,6 +404,16 @@ __powerbash() {
         __powerbash_vterm_printf "51;A${user}@${host}:${pwd}"
     }
 
+    __powerbash_vterm_cmd() {
+        local vterm_elisp
+        vterm_elisp=""
+        while [ $# -gt 0 ]; do
+            vterm_elisp="$vterm_elisp""$(printf '"%s" ' "$(printf "%s" "$1" | sed -e 's|\\|\\\\|g' -e 's|"|\\"|g')")"
+            shift
+        done
+        __powerbash_vterm_printf "51;E$vterm_elisp"
+    }
+
     # Optional: export compatibility names ONLY if user hasn't defined them.
     __powerbash_vterm_install_compat() {
         __powerbash_is_vterm || return 0
@@ -415,6 +425,11 @@ __powerbash() {
         declare -F vterm_prompt_end >/dev/null 2>&1 || vterm_prompt_end() {
                 __powerbash_vterm_prompt_end
             }
+
+        declare -F vterm_cmd >/dev/null 2>&1 || vterm_cmd() {
+                __powerbash_vterm_cmd "$@"
+            }
+        export -f vterm_cmd __powerbash_vterm_cmd __powerbash_vterm_printf
     }
     __powerbash_vterm_install_compat
 
