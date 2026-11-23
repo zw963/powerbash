@@ -159,11 +159,11 @@ __powerbash() {
         local foreground=$2
         declare -a codes
 
-        [[ -z $background || ( -z $foreground && $foreground != default ) ]] && codes+=($RESET)
-        [[ -n $background ]] && codes+=($(bg_color $background))
-        [[ -n $foreground ]] && codes+=($(fg_color $foreground))
+        [[ -z $background || ( -z $foreground && $foreground != default ) ]] && codes+=("$RESET")
+        [[ -n $background ]] && codes+=("$(bg_color "$background")")
+        [[ -n $foreground ]] && codes+=("$(fg_color "$foreground")")
 
-        if [[ $CURRENT_BG != NONE && $background != $CURRENT_BG ]]; then
+        if [[ $CURRENT_BG != NONE && $background != "$CURRENT_BG" ]]; then
             echo -n "$(fg_color $CURRENT_BG)$(bg_color $background)$SEGMENT_SEPARATOR${codes[*]}"
         else
             echo -n "${codes[*]}"
@@ -217,10 +217,10 @@ __powerbash() {
         [ -n "$VIRTUAL_ENV" ] || return # virtualenvironment not found
 
         # get virtualenv name
-        local venv="$(basename $VIRTUAL_ENV)"
+        local venv=${VIRTUAL_ENV##*/}
         [ -n "$venv" ] || return
 
-        printf "$COLOR_PY_VIRTUALENV ▶ $venv $RESET"
+        printf '%s ▶ %s %s' "$COLOR_PY_VIRTUALENV" "$venv" "$RESET"
     }
 
     __powerbash_git_display() {
@@ -286,21 +286,22 @@ __powerbash() {
 
     __powerbash_path_parted() {
         local dir_split_count=5
-        local pwd=${PWD/$HOME/'~'}
+        local pwd=$PWD
+        [[ $PWD == "$HOME" || $PWD == "$HOME/"* ]] && pwd="~${PWD#"$HOME"}"
         local dir_parted=$pwd
         local dir_array=""
 
-        if [ $pwd == $HOME ]; then
+        if [[ $PWD == "$HOME" ]]; then
             dir_array=('~')
         else
-            IFS='/' read -a dir_array <<< "$pwd"
+            IFS='/' read -r -a dir_array <<< "$pwd"
         fi
 
         if [ ${#dir_array[@]} -gt $dir_split_count ]; then
             local dir_parted="${dir_array[0]}/${dir_array[1]}/.../${dir_array[${#dir_array[@]}-2]}/${dir_array[${#dir_array[@]}-1]}"
         fi
 
-        printf "$dir_parted"
+        printf '%s' "$dir_parted"
     }
 
     __powerbash_path_short() {
@@ -309,13 +310,13 @@ __powerbash() {
         local short_path=$PWD
         (( ${#PWD} > $POWERBASH_PATH_SHORT_LENGTH )) && short_path="..${PWD: -$POWERBASH_PATH_SHORT_LENGTH}"
 
-        printf "$short_path"
+        printf '%s' "$short_path"
     }
 
     __powerbash_path_short_length() {
         [ -z "$POWERBASH_PATH_SHORT_LENGTH" ] && POWERBASH_PATH_SHORT_LENGTH=20 # sane default
 
-        [ -n $2 ] && local length="$2" # add/subtract by $2 when provided
+        [ -n "$2" ] && local length="$2" # add/subtract by $2 when provided
         [ -z "$length" ] && local length="1" # add/subtract by 1 by default
         [ "$1" == "subtract" ] && ((POWERBASH_PATH_SHORT_LENGTH-=$length))
         [ "$1" == "add" ] && ((POWERBASH_PATH_SHORT_LENGTH+=$length))
@@ -324,19 +325,20 @@ __powerbash() {
     }
 
     __powerbash_path_mini() {
+        local dir dir_array
         local current_path="${PWD/$HOME/\~}"
 
-        IFS='/' read -a dir_array <<< "$current_path"
+        IFS='/' read -r -a dir_array <<< "$current_path"
 
         local path=""
         local dir_len=$((${#dir_array[@]}-1))
 
-        for dir in ${dir_array[@]:0:$dir_len}; do
+        for dir in "${dir_array[@]:0:$dir_len}"; do
             [[ $dir == '~' ]] && path="${dir:0:1}" || path="$path/${dir:0:1}"
         done
         path="$path/${dir_array[$dir_len]}"
 
-        printf "$path"
+        printf '%s' "$path"
     }
 
     __powerbash_path_display() {
